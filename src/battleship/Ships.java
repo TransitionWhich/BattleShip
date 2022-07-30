@@ -6,8 +6,8 @@ public enum Ships {
     CRUISER("Cruiser", 3),
     DESTROYER("Destroyer", 2);
 
-    String name;
-    int size;
+    final String name;
+    final int size;
 
     Ships(String name, int size) {
         this.name = name;

@@ -1,12 +1,12 @@
 package battleship;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Player {
-    String name;
+    final String name;
     Game game;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     Player(String name) {
         this.name = name;
@@ -24,16 +24,16 @@ public class Player {
         return game.getGrid();
     }
 
-    public ArrayList<ArrayList<ArrayList<Integer>>> getPlayerArray() {
+    public List<List<List<Integer>>> getPlayerArray() {
         return game.getShipArray();
     }
 
-    public void setPlayerArray(ArrayList<ArrayList<ArrayList<Integer>>> newArray) {
+    public void setPlayerArray(List<List<List<Integer>>> newArray) {
         game.setArray(newArray);
     }
 
-    public ArrayList<ArrayList<ArrayList<Integer>>> playGame(char[][] playerGrid, char[][] oppGrid,
-            ArrayList<ArrayList<ArrayList<Integer>>> oppArray) {
+    public List<List<List<Integer>>> playGame(char[][] playerGrid, char[][] oppGrid,
+            List<List<List<Integer>>> oppArray) {
         return game.oneRound(playerGrid, oppGrid, this.name, oppArray);
     }
 
