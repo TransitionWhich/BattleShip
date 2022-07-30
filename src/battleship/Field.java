@@ -1,14 +1,15 @@
 package battleship;
 
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Field {
-    static Scanner scanner = new Scanner(System.in);
+    static final Scanner scanner = new Scanner(System.in);
     protected char[][] newGrid;
-    ArrayList<ArrayList<ArrayList<Integer>>> shipsCoordinates = new ArrayList<ArrayList<ArrayList<Integer>>>();
+    List<List<List<Integer>>> shipsCoordinates = new ArrayList<>();
 
-    static Ships[] ships = Ships.values();
+    static final Ships[] ships = Ships.values();
 
     Field() {
         newGrid = createGrid(10);
@@ -16,15 +17,15 @@ public class Field {
     }
 
     public char[][] createGrid(int size) {
-        char[][] Grid = new char[size][size];
+        char[][] grid = new char[size][size];
 
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
-                Grid[r][c] = '~';
+                grid[r][c] = '~';
             }
         }
-        display(Grid);
-        return Grid;
+        display(grid);
+        return grid;
     }
 
     public void display(char[][] grid) {
@@ -44,8 +45,8 @@ public class Field {
     }
 
     public void start() {
-        for (int counter = 0; counter < ships.length; counter++) {
-            int[] shipCoord = getInput(ships[counter].getName(), ships[counter].getSize());
+        for (Ships ship : ships) {
+            int[] shipCoord = getInput(ship.getName(), ship.getSize());
             placeShip(shipCoord);
         }
     }
@@ -76,7 +77,7 @@ public class Field {
             System.out.println("Error! Wrong ship location! Try again: ");
             return false;
         }
-        if (!lengthCheck(shipName, shipSize, row, col)) {
+        if (!lengthCheck(shipSize, row, col)) {
             System.out.println("Error! Wrong length of the " + shipName + "! Try again: ");
             return false;
         }
@@ -92,20 +93,14 @@ public class Field {
     }
 
     public boolean straightCheck(int r, int c) {
-        if (c == 0 || r == 0) {
-            return true;
-        } else
-            return false;
+        return c == 0 || r == 0;
     }
 
-    public boolean lengthCheck(String name, int size, int r, int c) {
+    public boolean lengthCheck(int size, int r, int c) {
         boolean hor = (r == 0) && (c == size - 1);
         boolean ver = (c == 0) && (r == size - 1);
 
-        if (hor || ver) {
-            return true;
-        } else
-            return false;
+        return hor || ver;
     }
 
     public boolean tooClose(int r1, int c1, int r2, int c2) {
@@ -150,22 +145,19 @@ public class Field {
         int col1 = shipCoord[1];
         int row2 = shipCoord[2];
         int col2 = shipCoord[3];
-        ArrayList<ArrayList<Integer>> ship = new ArrayList<ArrayList<Integer>>();
+        List<List<Integer>> ship = new ArrayList<>();
 
         for (int i = Math.min(row1, row2); i < Math.max(row1, row2) + 1; i++) {
             for (int j = Math.min(col1, col2); j < Math.max(col1, col2) + 1; j++) {
                 newGrid[i][j] = 'O';
-                ArrayList<Integer> coor = new ArrayList<Integer>();
-                coor.add(i);
-                coor.add(j);
-                ship.add(coor);
+                ship.add(List.of(i,j));
             }
         }
         shipsCoordinates.add(ship);
         display(newGrid);
     }
 
-    public char getElemet(int row, int col) {
+    public char getElement(int row, int col) {
         return newGrid[row][col];
     }
 
@@ -173,16 +165,7 @@ public class Field {
         newGrid[row][col] = character;
     }
 
-    public void setArray(ArrayList<ArrayList<ArrayList<Integer>>> oppArray) {
-        shipsCoordinates = new ArrayList<ArrayList<ArrayList<Integer>>>();
-        ArrayList<ArrayList<Integer>> newShip;
-
-        for (int i = 0; i < oppArray.size(); i++) {
-            newShip = new ArrayList<ArrayList<Integer>>();
-            for (int j = 0; j < oppArray.get(i).size(); j++) {
-                newShip.add(oppArray.get(i).get(j));
-            }
-            shipsCoordinates.add(newShip);
-        }
+    public void setArray(List<List<List<Integer>>> oppArray) {
+        shipsCoordinates = new ArrayList<>(oppArray);
     }
 }

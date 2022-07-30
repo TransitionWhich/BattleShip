@@ -1,12 +1,12 @@
 package battleship;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        boolean finishFlag = false;
+    public static void main(String[] args) {
+        boolean finishFlag;
         int counter = 0;
-        ArrayList<ArrayList<ArrayList<Integer>>> updatedArray;
+        List<List<List<Integer>>> updatedArray;
 
         Player player1 = new Player("Player 1");
         Player player2 = new Player("Player 2");
@@ -14,21 +14,20 @@ public class App {
         char[][] player1G = player1.getPlayerGrid();
         char[][] player2G = player2.getPlayerGrid();
 
-        ArrayList<ArrayList<ArrayList<Integer>>> player2Array = player2.getPlayerArray();
-        ArrayList<ArrayList<ArrayList<Integer>>> player1Array = player1.getPlayerArray();
+        List<List<List<Integer>>> player2Array = player2.getPlayerArray();
+        List<List<List<Integer>>> player1Array = player1.getPlayerArray();
 
         do {
             if (counter % 2 == 0) {
                 updatedArray = player1.playGame(player1G, player2G, player2Array);
                 updateArray(updatedArray, player2);
                 player2Array = player2.getPlayerArray();
-                counter++;
             } else {
                 updatedArray = player2.playGame(player2G, player1G, player1Array);
                 updateArray(updatedArray, player1);
                 player1Array = player1.getPlayerArray();
-                counter++;
             }
+            counter++;
             finishFlag = Player.getFlag();
         } while (!finishFlag);
 
@@ -46,7 +45,7 @@ public class App {
          */
     }
 
-    public static void updateArray(ArrayList<ArrayList<ArrayList<Integer>>> update, Player player) {
+    public static void updateArray(List<List<List<Integer>>> update, Player player) {
         player.setPlayerArray(update);
     }
 }

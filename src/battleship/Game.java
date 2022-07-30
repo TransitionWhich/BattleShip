@@ -1,10 +1,10 @@
 package battleship;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game extends Field {
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     char[][] newField;
     static boolean finished = false;
     int sankShips = 0;
@@ -14,8 +14,8 @@ public class Game extends Field {
         super();
     }
 
-    public ArrayList<ArrayList<ArrayList<Integer>>> oneRound(char[][] playerGrid, char[][] oppGrid, String playerName,
-            ArrayList<ArrayList<ArrayList<Integer>>> oppArray) {
+    public List<List<List<Integer>>> oneRound(char[][] playerGrid, char[][] oppGrid, String playerName,
+            List<List<List<Integer>>> oppArray) {
         newField = super.createGrid(10);
         System.out.print("---------------------\n");
         super.display(playerGrid);
@@ -36,7 +36,7 @@ public class Game extends Field {
             coordinates = getInput();
         } while (!checkCoord(coordinates));
 
-        char element = super.getElemet(coordinates[0], coordinates[1]);
+        char element = super.getElement(coordinates[0], coordinates[1]);
         hitMiss(element, coordinates[0], coordinates[1]);
         checkSunk();
         if (status.equals("Hit")) {
@@ -56,7 +56,7 @@ public class Game extends Field {
 
     public void checkSunk() {
         for (int i = 0; i < super.shipsCoordinates.size(); i++) {
-            if (super.shipsCoordinates.get(i).size() == 0) {
+            if (super.shipsCoordinates.get(i).isEmpty()) {
                 super.shipsCoordinates.remove(i);
                 sankShips++;
             }
@@ -71,8 +71,7 @@ public class Game extends Field {
         String input = scanner.next().toUpperCase();
         int rowNew = input.charAt(0) - 65;
         int colNew = Integer.parseInt(input.substring(1)) - 1;
-        int[] coord = { rowNew, colNew };
-        return coord;
+        return new int[]{ rowNew, colNew };
     }
 
     public boolean checkCoord(int[] userIn) {
@@ -102,16 +101,14 @@ public class Game extends Field {
     }
 
     public void removeHit(int r, int c) {
-        ArrayList<Integer> coor = new ArrayList<Integer>();
-        coor.add(r);
-        coor.add(c);
+        List<Integer> coor = List.of(r,c);
 
-        for (int i = 0; i < super.shipsCoordinates.size(); i++) {
-            for (int j = 0; j < super.shipsCoordinates.get(i).size(); j++) {
-                if (super.shipsCoordinates.get(i).get(j).equals(coor)) {
-                    super.shipsCoordinates.get(i).remove(j);
-                    int size = super.shipsCoordinates.get(i).size();
-                    
+        for (List<List<Integer>> shipsCoordinate : super.shipsCoordinates) {
+            for (int j = 0; j < shipsCoordinate.size(); j++) {
+                if (shipsCoordinate.get(j).equals(coor)) {
+                    shipsCoordinate.remove(j);
+                    int size = shipsCoordinate.size();
+
                     if (size == 0) {
                         status = "Sunk";
                     } else
@@ -126,7 +123,7 @@ public class Game extends Field {
         return super.newGrid;
     }
 
-    public ArrayList<ArrayList<ArrayList<Integer>>> getShipArray() {
+    public List<List<List<Integer>>> getShipArray() {
         return super.shipsCoordinates;
     }
 }
